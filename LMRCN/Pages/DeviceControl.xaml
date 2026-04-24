@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LMRCN.DeviceControl"
+             xmlns:vm="clr-namespace:LMRCN.ViewModels" 
+             x:DataType="vm:MainViewModel"
+             Shell.BackgroundColor="#5B00EF"
+             Background="#191917">
+
+    <ScrollView>
+        <VerticalStackLayout x:Name="ViewContainer">
+            <VerticalStackLayout x:Name="Header">
+                <Line x:Name="Line0"
+                      Stroke="#543cca"
+                      StrokeThickness="2"
+                      X1="-2"
+                      Y1="0"
+                      X2="1920"
+                      Y2="0"
+                      />
+                <Label HeightRequest="38"
+                        />
+                <Label x:Name="Header0"
+                       Text="Device Information:"
+                       TextDecorations="Underline"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       FontSize="16"
+                       TextColor="White" 
+                       />
+                <Label HeightRequest="12"
+                       />
+                <Label x:Name="Bar0"
+                       HeightRequest="10"
+                       WidthRequest="360"
+                       BackgroundColor="Black"
+                       />
+                <Label x:Name="Text0"
+                       Text="{Binding CurrentDevice.DevName, StringFormat='Device Name: {0}'}"
+                       TextColor="#20c20e"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       FontSize="12"
+                       BackgroundColor="Black"
+                       WidthRequest="360"
+                       />
+                <Label x:Name="Text1"
+                       Text="{Binding CurrentDevice.DevIP, StringFormat='IPv4-Address: {0}'}"
+                       TextColor="#20c20e"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       FontSize="12"
+                       BackgroundColor="Black"
+                       WidthRequest="360"
+                       />
+                <Label x:Name="Text2"
+                       Text="{Binding CurrentDevice.DevPlatform, StringFormat='Device Platform: {0}'}"
+                       TextColor="#20c20e"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       FontSize="12"
+                       BackgroundColor="Black"
+                       WidthRequest="360"
+                       />
+                <Label x:Name="Bar1"
+                       HeightRequest="10"
+                       WidthRequest="360"
+                       BackgroundColor="Black"
+                       />
+                <Label HeightRequest="14"
+                       />
+                <Button x:Name="Button0"
+                        Text="Contact device:"
+                        Command="{Binding DeviceCommandCommand}"
+                        CommandParameter="_getPlatform"
+                        TextColor="White"
+                        HeightRequest="44"
+                        WidthRequest="253"
+                        BackgroundColor="Green"
+                        IsEnabled="{Binding CurrentDevice.IsNotReachable}"
+                        />
+                <Label HeightRequest="14"
+                       />
+                <Border x:Name="StatusBorder" Stroke="White" StrokeShape="RoundRectangle 7,7,7,7" WidthRequest="127" StrokeThickness="0.5">
+                    <Label x:Name="Status"
+                           Text="{Binding CurrentDevice.Stat, StringFormat='Status: {0}'}"
+                           TextColor="White"
+                           FontSize="12"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           BackgroundColor="{Binding CurrentDevice.StatColor}"
+                           HorizontalOptions="Center"
+                           HeightRequest="22"
+                           WidthRequest="127"
+                           />
+                </Border>
+                <Label HeightRequest="14"
+                       />
+                <ActivityIndicator x:Name="LoadingSpinner0"
+                                   Color="#7577FF"
+                                   HeightRequest="20"
+                                   WidthRequest="20"
+                                   IsRunning="{Binding ShowSpinner1}"
+                                   IsVisible="True"
+                                   />
+                <Label HeightRequest="2"
+                       />
+                <Line x:Name="Line1"
+                      Stroke="Grey"
+                      StrokeThickness="1"
+                      X1="-2"
+                      Y1="13"
+                      X2="1920"
+                      Y2="13"
+                      />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout x:Name="CommandContainer"
+                                 IsEnabled="{Binding CurrentDevice.IsReachable}"
+                                 IsVisible="{Binding CurrentDevice.IsReachable}"
+                                 BackgroundColor="#333">
+                <Label HeightRequest="30"
+                       />
+                
+                <VerticalStackLayout x:Name="WindowsCommandsView"
+                                     IsEnabled="{Binding CurrentDevice.IsWindows}"
+                                     IsVisible="{Binding CurrentDevice.IsWindows}"
+                                     >
+                    <Button x:Name="WindowsShutdown"
+                            Command="{Binding DeviceCommandCommand}"
+                            CommandParameter="_shutdown"
+                            Text="Power Off"
+                            TextColor="White"
+                            BackgroundColor="#236739"
+                            HeightRequest="44"
+                            WidthRequest="360"
+                            />
+                    <Label HeightRequest="10"
+                           />
+                    <Button x:Name="WindowsRestart"
+                            Command="{Binding DeviceCommandCommand}"
+                            CommandParameter="_restart"
+                            Text="Restart"
+                            TextColor="White"
+                            BackgroundColor="#236739"
+                            HeightRequest="44"
+                            WidthRequest="360"
+                            />
+                    <Label HeightRequest="10"
+                           />
+                    <Button x:Name="WindowsHibernate"
+                            Command="{Binding DeviceCommandCommand}"
+                            CommandParameter="_hibernate"
+                            Text="Hibernate"
+                            TextColor="White"
+                            BackgroundColor="#236739"
+                            HeightRequest="44"
+                            WidthRequest="360"
+                            />
+                    <Label HeightRequest="10"
+                           />
+                    <Button x:Name="WindowsSignOut"
+                            Command="{Binding DeviceCommandCommand}"
+                            CommandParameter="_signout"
+                            Text="Sign Out"
+                            TextColor="White"
+                            BackgroundColor="#236739"
+                            HeightRequest="44"
+                            WidthRequest="360"
+                            />
+                    <Label HeightRequest="10"
+                           />
+                    <Border x:Name="WindowsCustomBorder" Stroke="White" StrokeShape="RoundRectangle 7,7,7,7" WidthRequest="360" StrokeThickness="0.5">
+                        <Entry x:Name="WindowsCustom"
+                           ReturnCommand="{Binding DeviceCommandCommand}"
+                           ReturnCommandParameter="{Binding Text, Source={x:Reference WindowsCustom}, StringFormat='_customCommand:/c {0}'}"
+                           Placeholder="Custom cmd line"
+                           PlaceholderColor="#20c20e"
+                           TextColor="#20c20e"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           BackgroundColor="Black"
+                           WidthRequest="360"
+                           HeightRequest="40"
+                           />
+                    </Border>
+
+                </VerticalStackLayout>
+
+                <Label HeightRequest="30"
+                       />
+                <VerticalStackLayout x:Name="AndroidCommandsView"
+                                     IsEnabled="{Binding CurrentDevice.IsAndroid}"
+                                     IsVisible="{Binding CurrentDevice.IsAndroid}"
+                                     >
+
+                </VerticalStackLayout>
+                
+            </VerticalStackLayout>
+
+            <VerticalStackLayout x:Name="Dih">
+                <Line x:Name="Line2"
+                      Stroke="Grey"
+                      StrokeThickness="1"
+                      X1="-2"
+                      Y1="0"
+                      X2="1920"
+                      Y2="0"
+                      />
+            </VerticalStackLayout>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

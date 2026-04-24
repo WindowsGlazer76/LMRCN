@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LMRCN.MainPage"
+             xmlns:models="clr-namespace:LMRCN.Models"
+             xmlns:vm="clr-namespace:LMRCN.ViewModels"
+             x:DataType="vm:MainViewModel"
+             Background="#191917">
+    
+
+    <ScrollView>
+        <VerticalStackLayout x:Name="ViewContainer">
+
+            <VerticalStackLayout x:Name="Header">
+                <Label x:Name="Header0"
+                       Padding="0"
+                       Text="Local Multiplatform Remote Control Network"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       FontSize="Subtitle"
+                       TextColor="White" 
+                       BackgroundColor="#5B00EF"
+                       HeightRequest="56"
+                       />
+                <Line x:Name="Line0"
+                      Stroke="#543cca"
+                      StrokeThickness="2"
+                      X1="-2"
+                      Y1="0"
+                      X2="1920"
+                      Y2="0"
+                      />
+                <Label HeightRequest="25"
+                       />
+                <Button x:Name="ScanButton"
+                        Command="{Binding ScanCommand}"
+                        IsEnabled="{Binding IsNotScanning}"
+                        Text="GO! / Refresh"
+                        FontSize="16"
+                        BackgroundColor="Green"
+                        TextColor="White"
+                        WidthRequest="150"
+                        />
+                <Label x:Name="Text0"
+                       TextDecorations="Underline"
+                       Padding="13"
+                       Text="Search for availlable Devices in your Network:"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       FontSize="12"
+                       />
+                <ActivityIndicator x:Name="LoadingSpinner0"
+                                   HeightRequest="20"
+                                   WidthRequest="20"
+                                   Color="#7577FF"
+                                   IsVisible="{Binding ShowSpinner0}"
+                                   IsRunning="{Binding ShowSpinner0}"/>
+                <Label HeightRequest="14"
+                       />
+                <Label x:Name="Bar0"
+                       HeightRequest="28"
+                       BackgroundColor="Black"
+                       />
+                <Line x:Name="Line1"
+                      Stroke="Grey"
+                      StrokeThickness="1"
+                      X1="-2"
+                      Y1="0"
+                      X2="1920"
+                      Y2="0"
+                      />
+                <Label HeightRequest="14"
+                       />
+            </VerticalStackLayout>
+
+            <CollectionView x:Name="ClientListView"
+                            ItemsSource="{Binding DeviceList}"
+                            IsEnabled="{Binding IsNotScanning}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Endgerät">
+                        <Border Padding="10" Margin="5" StrokeThickness="0.5" BackgroundColor="#333">
+                            <VerticalStackLayout>
+                                <Button Text="{Binding DevName}"
+                                   HeightRequest="44"
+                                   WidthRequest="420"
+                                   Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenDeviceControl}"
+                                   CommandParameter="{Binding .}"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   BackgroundColor="#236739"/>
+                                <Label Text="{Binding DevIP}"
+                                   FontSize="12"
+                                   TextColor="LightGray"
+                                   HorizontalTextAlignment="Center"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <VerticalStackLayout x:Name="Dih">
+                <Label HeightRequest="14"
+                       />
+                <Label x:Name="Line2"
+                       HeightRequest="1"
+                       BackgroundColor="Grey"
+                       />
+                <Label HeightRequest="24"
+                        />
+            </VerticalStackLayout>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
