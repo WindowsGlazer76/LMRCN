@@ -5,13 +5,11 @@ using System.Net.Sockets;
 using CommunityToolkit.Mvvm.ComponentModel;
 #if ANDROID
 using Android.App;
-using Android.Media;
 using Android.Net.Wifi;
 #endif
 
 namespace LMRCN.Models
 {
-
     public class Model
     {
 
@@ -47,12 +45,6 @@ namespace LMRCN.Models
         public string statColor = "DarkRed";
         [ObservableProperty]
         public string stat = "Not contacted";
-        [ObservableProperty]
-        public bool isFindingDevice = false;
-        [ObservableProperty]
-        public string findDeviceButtonText = "Find Device";
-        [ObservableProperty]
-        public string findDeviceButtonColor = "Green";
 
         public Endgerät(string ip, string subnet, int port, string name)
         {
@@ -114,31 +106,31 @@ namespace LMRCN.Models
                             await _server.SendAsync(response, response.Length, remoteEndPoint);
                         }
 
-                        if (incomingMessage == ThisDevice.DevName + "_shutdown")
+                        else if (incomingMessage == ThisDevice.DevName + "_shutdown")
                         {
                             response = System.Text.Encoding.UTF8.GetBytes(incomingMessage + ":valid");
                             await _server.SendAsync(response, response.Length, remoteEndPoint);
                             _ = Funktionen.Cmd("/c shutdown /s /f /t 0", true);
                         }
-                        if (incomingMessage == ThisDevice.DevName + "_restart")
+                        else if (incomingMessage == ThisDevice.DevName + "_restart")
                         {
                             response = System.Text.Encoding.UTF8.GetBytes(incomingMessage + ":valid");
                             await _server.SendAsync(response, response.Length, remoteEndPoint);
                             _ = Funktionen.Cmd("/c shutdown /r /f /t 0", true);
                         }
-                        if (incomingMessage == ThisDevice.DevName + "_hibernate")
+                        else if (incomingMessage == ThisDevice.DevName + "_hibernate")
                         {
                             response = System.Text.Encoding.UTF8.GetBytes(incomingMessage + ":valid");
                             await _server.SendAsync(response, response.Length, remoteEndPoint);
                             _ = Funktionen.Cmd("/c shutdown /h /f", true);
                         }
-                        if (incomingMessage == ThisDevice.DevName + "_logoff")
+                        else if (incomingMessage == ThisDevice.DevName + "_logoff")
                         {
                             response = System.Text.Encoding.UTF8.GetBytes(incomingMessage + ":valid");
                             await _server.SendAsync(response, response.Length, remoteEndPoint);
                             _ = Funktionen.Cmd("/c shutdown /l /f", true);
                         }
-                        if (incomingMessage.Contains(':'))
+                        else if (incomingMessage.Contains(':'))
                         {
                             if (incomingMessage.Substring(0, incomingMessage.IndexOf(':')) == ThisDevice.DevName + "_customCommand")
                             {
@@ -284,23 +276,6 @@ namespace LMRCN.Models
                             throw new Exception("invalid platform declaration!");
                         }
 
-                    }
-                    else if (command == "_findDevice")
-                    {
-                        switch (device.IsFindingDevice)
-                        {
-                            case true:
-                                device.IsFindingDevice = false;
-                                device.FindDeviceButtonColor = "Green";
-                                device.FindDeviceButtonText = "Find Device";
-                                break;
-
-                            case false:
-                                device.IsFindingDevice = true;
-                                device.FindDeviceButtonColor = "DarkRed";
-                                device.FindDeviceButtonText = "Stop";
-                                break;
-                        }
                     }
 
                     if (msg == device.DevName + command + ":valid")
